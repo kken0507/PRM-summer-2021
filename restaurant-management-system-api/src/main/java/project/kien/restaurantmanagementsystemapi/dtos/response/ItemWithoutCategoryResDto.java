@@ -1,4 +1,4 @@
-package project.kien.restaurantmanagementsystemapi.dtos.res;
+package project.kien.restaurantmanagementsystemapi.dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
