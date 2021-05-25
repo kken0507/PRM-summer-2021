@@ -3,6 +3,7 @@ package project.kien.restaurantmanagementsystemapi.dtos.response;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.kien.restaurantmanagementsystemapi.entities.Account;
 import project.kien.restaurantmanagementsystemapi.enums.SessionEnum;
 
 import java.time.LocalDateTime;
@@ -14,8 +15,8 @@ public class OpenSessionResponseDto {
     String sessionNumber;
     String position;
     SessionEnum status;
-    int createdBy;
-    int updatedBy;
+    Account creator;
+    Account updater;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 }

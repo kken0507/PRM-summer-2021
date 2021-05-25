@@ -5,4 +5,6 @@ import project.kien.restaurantmanagementsystemapi.dtos.response.OpenSessionRespo
 
 public interface SessionService {
     OpenSessionResponseDto openSession(OpenSessionRequestDto request);
+
+    String closeSession(int sessionId, int updater);
 }
