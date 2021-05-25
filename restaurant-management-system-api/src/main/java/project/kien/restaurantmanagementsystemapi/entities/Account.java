@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,7 +19,7 @@ import javax.persistence.*;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class Account{
+public class Account extends Audit{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +31,25 @@ public class Account{
     @Column(name = "password", length = 100, nullable = false)
     private String password;
 
-    @Column(name = "rfid", length = 80)
-    private String rfid;
+    @Column(name = "role", length = 20, nullable = false)
+    private String role;
+
+    @Column(name = "isActive", nullable = false)
+    private boolean isActive;
 
     @Column(name = "avatar", length = 500)
     private String avatar;
+
+    @Column(name = "fullname", length = 50, nullable = false)
+    private String fullname;
+
+    @Column(name = "phone", length = 10, nullable = false)
+    private String phone;
+
+    @Column(name = "gender", length = 1, nullable = false)
+    private String gender;
+
+    @Column(name = "dob", nullable = false)
+    private LocalDate dob;
+
 }
