@@ -148,6 +148,11 @@ public class ApplicationExceptionHandler {
                 HttpStatus.CONFLICT.value(),
                 ConstantUtil.EXCEPTION_FK_DUPLICATED,
                 "Data Integrity Violation");
+        if (exception.getRootCause() != null && exception.getRootCause().getMessage() != null
+                && exception.getRootCause().getMessage().contains("Column 'created_at' cannot be null")) {
+            errorDto.setMessage("Hoàng đẹp trai");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+        }
         /*if (exception.getRootCause() != null && exception.getRootCause().getMessage() != null
                 && exception.getRootCause().getMessage().contains("FK_copy_book")) {
             errorDto.setMessage("Cannot delete this book because there are existing copies of this book");

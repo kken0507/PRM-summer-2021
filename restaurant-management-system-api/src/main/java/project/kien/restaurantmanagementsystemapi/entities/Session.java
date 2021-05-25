@@ -25,7 +25,7 @@ public class Session extends Audit{
     private Integer id;
 
     @Column(name = "session_number", length = 100, nullable = false)
-    private String session_number;
+    private String sessionNumber;
 
     @Column(name = "position", length = 100, nullable = false)
     private String position;

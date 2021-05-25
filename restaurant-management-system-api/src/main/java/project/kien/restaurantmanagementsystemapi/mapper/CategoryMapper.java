@@ -2,7 +2,7 @@ package project.kien.restaurantmanagementsystemapi.mapper;
 
 import org.mapstruct.Mapper;
 import project.kien.restaurantmanagementsystemapi.dtos.common.CategoryDto;
-import project.kien.restaurantmanagementsystemapi.dtos.res.CategoryResDto;
+import project.kien.restaurantmanagementsystemapi.dtos.response.CategoryResDto;
 import project.kien.restaurantmanagementsystemapi.entities.Category;
 
 @Mapper(uses = {ItemMapper.class}, componentModel = "spring")

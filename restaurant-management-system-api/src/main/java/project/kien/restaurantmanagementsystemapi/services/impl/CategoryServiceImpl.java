@@ -2,7 +2,7 @@ package project.kien.restaurantmanagementsystemapi.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.kien.restaurantmanagementsystemapi.dtos.res.CategoryResDto;
+import project.kien.restaurantmanagementsystemapi.dtos.response.CategoryResDto;
 import project.kien.restaurantmanagementsystemapi.mapper.CategoryMapper;
 import project.kien.restaurantmanagementsystemapi.repositories.CategoryRepository;
 import project.kien.restaurantmanagementsystemapi.services.CategoryService;

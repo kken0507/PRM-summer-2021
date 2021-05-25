@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import project.kien.restaurantmanagementsystemapi.dtos.request.OpenSessionRequestDto;
+import project.kien.restaurantmanagementsystemapi.dtos.response.OpenSessionResponseDto;
 import project.kien.restaurantmanagementsystemapi.services.SessionService;
 
 @RestController
@@ -12,8 +14,8 @@ public class SessionController {
     @Autowired
     SessionService sessionService;
 
-//    @PostMapping("/openSession")
-//    public String openSession(){
-//        return sessionService.openSession();
-//    }
+    @PostMapping("/openSession")
+    public OpenSessionResponseDto openSession(OpenSessionRequestDto request){
+        return sessionService.openSession(request);
+    }
 }
