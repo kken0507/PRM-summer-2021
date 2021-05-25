@@ -1,17 +1,21 @@
 package project.kien.restaurantmanagementsystemapi.config;
 
-import org.apache.tomcat.util.http.LegacyCookieProcessor;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import project.kien.restaurantmanagementsystemapi.security.AuditorAwareImpl;
 
 @Configuration
 @EnableWebMvc
+@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class WebMvcConfig implements WebMvcConfigurer {
 //    private final long MAX_AGE_SECS = 3600;
 
@@ -48,6 +52,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return messageSource;
     }
 
+    @Override
     @Bean
     public LocalValidatorFactoryBean getValidator() {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
@@ -61,5 +66,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //                (context) -> context.setCookieProcessor(new LegacyCookieProcessor()));
 //    }
 
+    @Bean
+    AuditorAware<Integer> auditorProvider() {
+        return new AuditorAwareImpl();
+    }
 
 }

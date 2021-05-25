@@ -14,7 +14,6 @@ import project.kien.restaurantmanagementsystemapi.services.SessionService;
 import project.kien.restaurantmanagementsystemapi.utils.tools.SessionNumberGenerator;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -40,9 +39,9 @@ public class SessionServiceImpl implements SessionService {
         var newSession = objectMapper.convertValue(request, Session.class);
         newSession.setSessionNumber(new SessionNumberGenerator().generate(request.getPosition()));
         newSession.setStatus(SessionEnum.OPENING.name());
-        newSession.setCreatedAt(LocalDateTime.now());
-        newSession.setCreator(accountRepository.findById(request.getCreator()).orElseThrow(() ->
-                new ResourceNotFoundException(ACCOUNT, CREATOR_NOT_FOUND)));
+//        newSession.setCreatedAt(LocalDateTime.now());
+//        newSession.setCreatedBy(accountRepository.findById(request.getCreator()).orElseThrow(() ->
+//                new ResourceNotFoundException(ACCOUNT, CREATOR_NOT_FOUND)).getId());
         /*=======================*/
 
         return objectMapper.convertValue(sessionRepository.save(newSession), OpenSessionResponseDto.class);
@@ -54,9 +53,9 @@ public class SessionServiceImpl implements SessionService {
         var session = sessionRepository.findById(sessionId).
                 orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND));
         session.setStatus(SessionEnum.CLOSED.name());
-        session.setUpdatedAt(LocalDateTime.now());
-        session.setUpdater(accountRepository.findById(updater).orElseThrow(() ->
-                new ResourceNotFoundException(ACCOUNT, UPDATER_NOT_FOUND)));
+//        session.setUpdatedAt(LocalDateTime.now());
+//        session.setUpdatedBy(accountRepository.findById(updater).orElseThrow(() ->
+//                new ResourceNotFoundException(ACCOUNT, UPDATER_NOT_FOUND)).getId());
         sessionRepository.save(session);
         return "success";
     }
