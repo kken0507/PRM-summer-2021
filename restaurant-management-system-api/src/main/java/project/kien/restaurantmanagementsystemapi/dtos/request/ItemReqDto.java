@@ -1,4 +1,4 @@
-package project.kien.restaurantmanagementsystemapi.dtos.response;
+package project.kien.restaurantmanagementsystemapi.dtos.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,11 +13,9 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemResDto implements Serializable {
-    private Integer id;
-
+public class ItemReqDto implements Serializable {
     @NotNull(message = "{item.name.notNull}")
-    @Length(max = 50, message = "{category.name.length}")
+    @Length(max = 50, message = "{item.name.length}")
     private String name;
 
     @NotNull(message = "{item.price.notNull}")
@@ -27,7 +25,7 @@ public class ItemResDto implements Serializable {
     private String description;
 
     @NotNull(message = "{item.isAvailable.notNull}")
-    private boolean isAvailable;
+    private Boolean isAvailable;
 
-    private CategoryWithoutItemsResDto category;
+    private Integer categoryId;
 }

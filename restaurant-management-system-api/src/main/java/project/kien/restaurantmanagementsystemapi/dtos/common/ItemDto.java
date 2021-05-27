@@ -17,7 +17,7 @@ public class ItemDto implements Serializable {
     private Integer id;
 
     @NotNull(message = "{item.name.notNull}")
-    @Length(max = 50, message = "{category.name.length}")
+    @Length(max = 50, message = "{item.name.length}")
     private String name;
 
     @NotNull(message = "{item.price.notNull}")

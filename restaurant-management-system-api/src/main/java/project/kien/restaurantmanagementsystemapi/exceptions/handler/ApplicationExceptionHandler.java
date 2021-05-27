@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import project.kien.restaurantmanagementsystemapi.dtos.common.ErrorDto;
+import project.kien.restaurantmanagementsystemapi.enums.ErrorStatus;
 import project.kien.restaurantmanagementsystemapi.exceptions.*;
 import project.kien.restaurantmanagementsystemapi.utils.constants.ConstantUtil;
-import project.kien.restaurantmanagementsystemapi.utils.enums.ErrorStatus;
 
 import javax.validation.ConstraintViolationException;
 import java.nio.file.AccessDeniedException;
@@ -150,7 +150,7 @@ public class ApplicationExceptionHandler {
                 "Data Integrity Violation");
         if (exception.getRootCause() != null && exception.getRootCause().getMessage() != null
                 && exception.getRootCause().getMessage().contains("Column 'created_at' cannot be null")) {
-            errorDto.setMessage("Hoàng đẹp trai");
+            errorDto.setMessage("Created at can not be null");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
         }
         /*if (exception.getRootCause() != null && exception.getRootCause().getMessage() != null
