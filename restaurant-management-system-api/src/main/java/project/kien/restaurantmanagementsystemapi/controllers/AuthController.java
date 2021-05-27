@@ -5,7 +5,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import project.kien.restaurantmanagementsystemapi.entities.Account;
 import project.kien.restaurantmanagementsystemapi.security.JwtTokenProvider;
 import project.kien.restaurantmanagementsystemapi.security.payload.LoginRequest;
@@ -13,7 +16,6 @@ import project.kien.restaurantmanagementsystemapi.security.payload.LoginResponse
 import project.kien.restaurantmanagementsystemapi.services.AccountService;
 import project.kien.restaurantmanagementsystemapi.utils.constants.SecurityConstant;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -52,22 +54,22 @@ public class AuthController {
                 loginRequest.getEmail(),
                 avatar
         );
-        //set cookies
-        Cookie cookie = new Cookie(SecurityConstant.HEADER_STRING, jwt);
-        cookie.setPath("/");
-        cookie.setMaxAge(SecurityConstant.EXPIRATION_TIME / 1000);
-        response.addCookie(cookie);
+//        //set cookies
+//        Cookie cookie = new Cookie(SecurityConstant.HEADER_STRING, jwt);
+//        cookie.setPath("/");
+//        cookie.setMaxAge(SecurityConstant.EXPIRATION_TIME / 1000);
+//        response.addCookie(cookie);
 
         return payload;
     }
 
-    @GetMapping("/auth/logout")
-    public String logout(HttpServletResponse response) {
-        Cookie cookie = new Cookie(SecurityConstant.HEADER_STRING, null);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-        return "Logout Success";
-    }
+//    @GetMapping("/auth/logout")
+//    public String logout(HttpServletResponse response) {
+//        Cookie cookie = new Cookie(SecurityConstant.HEADER_STRING, null);
+//        cookie.setPath("/");
+//        cookie.setMaxAge(0);
+//        response.addCookie(cookie);
+//        return "Logout Success";
+//    }
 
 }

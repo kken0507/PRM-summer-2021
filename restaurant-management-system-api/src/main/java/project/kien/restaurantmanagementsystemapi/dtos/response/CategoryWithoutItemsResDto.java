@@ -13,21 +13,12 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemResDto implements Serializable {
+public class CategoryWithoutItemsResDto implements Serializable {
+
     private Integer id;
 
-    @NotNull(message = "{item.name.notNull}")
+    @NotNull(message = "{category.name.notNull}")
     @Length(max = 50, message = "{category.name.length}")
     private String name;
 
-    @NotNull(message = "{item.price.notNull}")
-    private Double price;
-
-    @Length(max = 500, message = "{item.description.length}")
-    private String description;
-
-    @NotNull(message = "{item.isAvailable.notNull}")
-    private boolean isAvailable;
-
-    private CategoryWithoutItemsResDto category;
 }
