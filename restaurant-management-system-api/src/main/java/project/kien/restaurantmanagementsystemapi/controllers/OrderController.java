@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.kien.restaurantmanagementsystemapi.dtos.common.ErrorDto;
+import project.kien.restaurantmanagementsystemapi.dtos.request.OrderDetailReqDto;
 import project.kien.restaurantmanagementsystemapi.services.OrderService;
 import project.kien.restaurantmanagementsystemapi.utils.constants.ConstantUtil;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,9 +28,9 @@ public class OrderController {
     @ApiOperation(value = "This API create new order from list of items' ids")
     @ApiResponses(value = {@ApiResponse(code = 400, message = "Missing input", response = ErrorDto.class)})
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody(required = true) List<Integer> items) {
+    public ResponseEntity<?> create(@Valid @RequestBody(required = true) List<OrderDetailReqDto> items, int sessionId) {
 
-        boolean bool = service.create(items);
+        boolean bool = service.create(items, sessionId);
 
         ErrorDto error = new ErrorDto(LocalDateTime.now().toString(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),

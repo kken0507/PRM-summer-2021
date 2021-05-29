@@ -24,7 +24,8 @@ public class OrderStatus extends AuditCreateOnly {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name", length = 50, nullable = false)
+    @Column(name = "status", length = 50, nullable = false)
+    @Enumerated(EnumType.STRING)
     private OrderEnum status;
 
     @ManyToOne(fetch = FetchType.LAZY)
