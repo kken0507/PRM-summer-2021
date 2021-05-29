@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.kien.restaurantmanagementsystemapi.enums.OrderEnum;
 
 import javax.persistence.*;
 
@@ -18,13 +19,13 @@ import javax.persistence.*;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class OrderStatus extends AuditCreateOnly{
+public class OrderStatus extends AuditCreateOnly {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name", length = 50, nullable = false)
-    private String name;
+    private OrderEnum status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
