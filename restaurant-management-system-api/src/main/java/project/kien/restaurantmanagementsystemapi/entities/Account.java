@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class Account extends Audit{
+public class Account extends Audit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

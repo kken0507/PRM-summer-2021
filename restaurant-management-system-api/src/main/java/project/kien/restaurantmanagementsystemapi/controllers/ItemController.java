@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.kien.restaurantmanagementsystemapi.dtos.common.ErrorDto;
-import project.kien.restaurantmanagementsystemapi.dtos.request.CategoryReqDto;
-import project.kien.restaurantmanagementsystemapi.dtos.response.CategoryResDto;
-import project.kien.restaurantmanagementsystemapi.services.CategoryService;
+import project.kien.restaurantmanagementsystemapi.dtos.request.ItemReqDto;
+import project.kien.restaurantmanagementsystemapi.dtos.response.ItemResDto;
+import project.kien.restaurantmanagementsystemapi.services.ItemService;
 import project.kien.restaurantmanagementsystemapi.utils.ApiPageable;
 import project.kien.restaurantmanagementsystemapi.utils.constants.ConstantUtil;
 import springfox.documentation.annotations.ApiIgnore;
@@ -23,70 +23,70 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
-public class CategoryController {
+@RequestMapping("/item")
+public class ItemController {
     @Autowired
-    CategoryService service;
+    ItemService service;
 
     @GetMapping("/all")
-    public List<CategoryResDto> findAll() {
+    public List<ItemResDto> findAll() {
         return service.findAll();
     }
 
-    @ApiOperation(value = "This API create new category")
+    @ApiOperation(value = "This API create new item")
     @ApiResponses(value = {@ApiResponse(code = 400, message = "Missing input", response = ErrorDto.class)})
     @PostMapping("/create")
-    public ResponseEntity<?> create(@Valid @RequestBody(required = true) CategoryReqDto newCategory) {
+    public ResponseEntity<?> create(@Valid @RequestBody(required = true) ItemReqDto newItem) {
 
-        boolean bool = service.create(newCategory);
+        boolean bool = service.create(newItem);
 
         ErrorDto error = new ErrorDto(LocalDateTime.now().toString(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "INTERNAL SERVER ERROR",
-                "Failed to create new category");
+                "Failed to create new item");
 
         return new ResponseEntity(bool ? ConstantUtil.CREATE_SUCCESS : error,
                 bool ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ApiOperation(value = "This API update a category by id")
+    @ApiOperation(value = "This API update a item by id")
     @ApiResponses(value = {@ApiResponse(code = 400, message = "Missing input", response = ErrorDto.class)})
-    @PostMapping("/update/{categoryId}")
-    public ResponseEntity<?> create(@NotNull @PathVariable("categoryId") int id, @Valid @RequestBody(required = true) CategoryReqDto category) {
+    @PostMapping("/update/{itemId}")
+    public ResponseEntity<?> create(@NotNull @PathVariable("itemId") int id, @Valid @RequestBody(required = true) ItemReqDto item) {
 
-        boolean bool = service.update(id, category);
+        boolean bool = service.update(id, item);
 
         ErrorDto error = new ErrorDto(LocalDateTime.now().toString(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "INTERNAL SERVER ERROR",
-                "Failed to update the category");
+                "Failed to update the item");
 
         return new ResponseEntity(bool ? ConstantUtil.UPDATE_SUCCESS : error,
                 bool ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ApiOperation(value = "This API update a category by id")
+    @ApiOperation(value = "This API update a item by id")
     @ApiResponses(value = {@ApiResponse(code = 400, message = "Missing input", response = ErrorDto.class)})
-    @PostMapping("/delete/{categoryId}")
-    public ResponseEntity<?> delete(@NotNull @PathVariable("categoryId") int id) {
+    @PostMapping("/delete/{itemId}")
+    public ResponseEntity<?> delete(@NotNull @PathVariable("itemId") int id) {
 
         boolean bool = service.delete(id);
 
         ErrorDto error = new ErrorDto(LocalDateTime.now().toString(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "INTERNAL SERVER ERROR",
-                "Failed to delete the category");
+                "Failed to delete the item");
 
         return new ResponseEntity(bool ? ConstantUtil.DELETE_SUCCESS : error,
                 bool ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ApiOperation(value = "This API search a category contains a name and filter by items status")
+    @ApiOperation(value = "This API search a item contains a name and filter by status")
     @ApiResponses(value = {@ApiResponse(code = 400, message = "Missing input", response = ErrorDto.class)})
     @GetMapping("/search")
     @ApiPageable
-    public Page<CategoryResDto> search(@RequestParam(required = false, value = "name") String name, @RequestParam(required = false, value = "isItemsAvailable") Boolean isItemsAvailable, @ApiIgnore("Ignored because swagger ui shows the wrong params") Pageable pageable) {
-        return service.search(name, isItemsAvailable, pageable);
+    public Page<ItemResDto> search(@RequestParam(required = false, value = "name") String name, @RequestParam(required = false, value = "isAvailable") Boolean isAvailable, @ApiIgnore("Ignored because swagger ui shows the wrong params") Pageable pageable) {
+        return service.search(name, isAvailable, pageable);
     }
 
 }

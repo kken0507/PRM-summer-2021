@@ -2,6 +2,7 @@ package project.kien.restaurantmanagementsystemapi.mapper;
 
 import org.mapstruct.Mapper;
 import project.kien.restaurantmanagementsystemapi.dtos.common.CategoryDto;
+import project.kien.restaurantmanagementsystemapi.dtos.request.CategoryReqDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.CategoryResDto;
 import project.kien.restaurantmanagementsystemapi.entities.Category;
 
@@ -13,5 +14,7 @@ public interface CategoryMapper {
     CategoryDto toDto(Category entity);
 
     CategoryResDto toResDto(Category entity);
+
+    Category toEntity(CategoryReqDto entity);
 
 }
