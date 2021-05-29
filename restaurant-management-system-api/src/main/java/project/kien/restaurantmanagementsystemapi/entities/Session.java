@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.kien.restaurantmanagementsystemapi.enums.SessionEnum;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -31,7 +32,8 @@ public class Session extends Audit {
     private String position;
 
     @Column(name = "status", length = 50, nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private SessionEnum status;
 
     @OneToMany(mappedBy = "session")
     private Set<Order> orders;
