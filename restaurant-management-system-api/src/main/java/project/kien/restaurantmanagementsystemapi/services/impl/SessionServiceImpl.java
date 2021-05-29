@@ -38,7 +38,7 @@ public class SessionServiceImpl implements SessionService {
          * */
         var newSession = objectMapper.convertValue(request, Session.class);
         newSession.setSessionNumber(new SessionNumberGenerator().generate(request.getPosition()));
-        newSession.setStatus(SessionEnum.OPENING.name());
+        newSession.setStatus(SessionEnum.OPENING);
 //        newSession.setCreatedAt(LocalDateTime.now());
 //        newSession.setCreatedBy(accountRepository.findById(request.getCreator()).orElseThrow(() ->
 //                new ResourceNotFoundException(ACCOUNT, CREATOR_NOT_FOUND)).getId());
@@ -52,7 +52,7 @@ public class SessionServiceImpl implements SessionService {
     public String closeSession(int sessionId, int updater) {
         var session = sessionRepository.findById(sessionId).
                 orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND));
-        session.setStatus(SessionEnum.CLOSED.name());
+        session.setStatus(SessionEnum.CLOSED);
 //        session.setUpdatedAt(LocalDateTime.now());
 //        session.setUpdatedBy(accountRepository.findById(updater).orElseThrow(() ->
 //                new ResourceNotFoundException(ACCOUNT, UPDATER_NOT_FOUND)).getId());
