@@ -32,6 +32,6 @@ public class OrderStatus extends AuditCreateOnly {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @Column(name = "content", length = 500, nullable = false)
+    @Column(name = "content", length = 500, nullable = true)
     private String content;
 }
