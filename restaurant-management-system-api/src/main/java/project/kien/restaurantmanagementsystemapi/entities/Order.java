@@ -28,9 +28,9 @@ public class Order extends Audit {
     @JoinColumn(name = "session_id")
     private Session session;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "customerOrder")
     private Set<OrderDetail> orderDetails;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "customerOrder")
     private Set<OrderStatus> orderStatus;
 }

@@ -30,7 +30,7 @@ public class OrderStatus extends AuditCreateOnly {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    private Order order;
+    private Order customerOrder;
 
     @Column(name = "content", length = 500, nullable = true)
     private String content;

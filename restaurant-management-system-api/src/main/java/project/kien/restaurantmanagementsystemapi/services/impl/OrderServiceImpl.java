@@ -26,6 +26,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderDetailRepository orderDetailRepository;
     @Autowired
     private OrderStatusRepository orderStatusRepository;
+
     @Autowired
     private SessionRepository sessionRepository;
     @Autowired
@@ -57,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
                         Optional<Item> itemOpt = itemRepository.findById(item.getItemId());
                         if (itemOpt.isPresent()) {
                             OrderDetail newDetail = new OrderDetail();
-                            newDetail.setOrder(newOrder);
+                            newDetail.setCustomerOrder(newOrder);
                             newDetail.setItem(itemOpt.get());
                             newDetail.setQuantity(item.getQuantity());
                             orderDetailRepository.save(newDetail);
@@ -66,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
 
                     OrderStatus newStatus = new OrderStatus();
                     newStatus.setStatus(OrderEnum.PENDING);
-                    newStatus.setOrder(newOrder);
+                    newStatus.setCustomerOrder(newOrder);
                     orderStatusRepository.save(newStatus);
 
                     isAdded = true;
@@ -79,5 +80,63 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return isAdded;
+    }
+
+    @Override
+    public boolean changeStatus(int orderId, OrderEnum orderEnum, String reason) {
+        Order order = orderRepository.findById(orderId).
+                orElseThrow(() -> new ResourceNotFoundException("Order", "Order is not found"));
+
+        OrderStatus newStatus = new OrderStatus();
+        newStatus.setStatus(orderEnum);
+        newStatus.setCustomerOrder(order);
+        if (reason != null && !reason.isEmpty()) {
+            newStatus.setContent(reason);
+        }
+        orderStatusRepository.save(newStatus);
+
+        return true;
+    }
+
+    @Override
+    public boolean declineOrder(int orderId, String reason) {
+        Order order = orderRepository.findById(orderId).
+                orElseThrow(() -> new ResourceNotFoundException("Order", "Order is not found"));
+
+        OrderStatus curOrderStatus = orderStatusRepository.getDistinctTopByCustomerOrder_IdOrderByCreatedAtDesc(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("OrderStatus", "Current order status is not found"));
+
+        if (curOrderStatus.getStatus().equals(OrderEnum.PENDING)) {
+
+            changeStatus(orderId, OrderEnum.DECLINED, reason);
+
+            return true;
+
+        } else if (curOrderStatus.getStatus() != null && !curOrderStatus.getStatus().toString().isEmpty()) {
+            throw new InvalidRequestException("Can not decline order because status is " + curOrderStatus.getStatus());
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean dropOrder(int orderId, String reason) {
+        Order order = orderRepository.findById(orderId).
+                orElseThrow(() -> new ResourceNotFoundException("Order", "Order is not found"));
+
+        OrderStatus curOrderStatus = orderStatusRepository.getDistinctTopByCustomerOrder_IdOrderByCreatedAtDesc(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("OrderStatus", "Current order status is not found"));
+
+        if (curOrderStatus.getStatus().equals(OrderEnum.CONFIRMED)) {
+
+            changeStatus(orderId, OrderEnum.DROPPED, reason);
+
+            return true;
+
+        } else if (curOrderStatus.getStatus() != null && !curOrderStatus.getStatus().toString().isEmpty()) {
+            throw new InvalidRequestException("Can not drop order because status is " + curOrderStatus.getStatus());
+        }
+
+        return false;
     }
 }
