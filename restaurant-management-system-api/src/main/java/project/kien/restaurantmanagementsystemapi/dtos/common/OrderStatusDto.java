@@ -22,7 +22,7 @@ public class OrderStatusDto {
     private OrderEnum status;
 
 
-    private OrderDto order;
+    private OrderDto customerOrder;
 
     @Length(max = 500, message = "{orderStatus.content.length}")
     private String content;

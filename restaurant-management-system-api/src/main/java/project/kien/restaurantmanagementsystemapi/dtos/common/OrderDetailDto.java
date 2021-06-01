@@ -17,7 +17,7 @@ public class OrderDetailDto {
 
     private Integer quantity;
 
-    private OrderDto order;
+    private OrderDto customerOrder;
 
     private ItemDto item;
 }

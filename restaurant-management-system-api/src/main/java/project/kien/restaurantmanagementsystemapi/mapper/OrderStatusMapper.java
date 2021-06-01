@@ -10,12 +10,12 @@ import java.util.Set;
 public interface OrderStatusMapper {
 
     @Mappings({
-            @Mapping(target = "order", qualifiedByName = "noOrderStatus"),
+            @Mapping(target = "customerOrder", qualifiedByName = "noOrderStatus"),
     })
     OrderStatusDto toDto(OrderStatus entity);
 
     @Named("noOrder")
-    @Mapping(target = "order", ignore = true)
+    @Mapping(target = "customerOrder", ignore = true)
     OrderStatusDto toDtoWithoutOrder(OrderStatus entity);
 
     @Named("noOrder")

@@ -6,10 +6,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import project.kien.restaurantmanagementsystemapi.dtos.common.ErrorDto;
 import project.kien.restaurantmanagementsystemapi.dtos.request.OrderDetailReqDto;
 import project.kien.restaurantmanagementsystemapi.services.OrderService;
@@ -38,6 +35,32 @@ public class OrderController {
                 "Failed to create new order");
 
         return new ResponseEntity(bool ? ConstantUtil.CREATE_SUCCESS : error,
+                bool ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/declineOrder/{orderId}")
+    public ResponseEntity<?> declineOrder(@PathVariable("orderId") int orderId, @RequestParam(required = true) String reason) {
+        boolean bool = service.declineOrder(orderId, reason);
+
+        ErrorDto error = new ErrorDto(LocalDateTime.now().toString(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "INTERNAL SERVER ERROR",
+                "Failed to decline the order");
+
+        return new ResponseEntity(bool ? ConstantUtil.UPDATE_SUCCESS : error,
+                bool ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/dropOrder/{orderId}")
+    public ResponseEntity<?> dropOrder(@PathVariable("orderId") int orderId, @RequestParam(required = true) String reason) {
+        boolean bool = service.dropOrder(orderId, reason);
+
+        ErrorDto error = new ErrorDto(LocalDateTime.now().toString(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "INTERNAL SERVER ERROR",
+                "Failed to drop the order");
+
+        return new ResponseEntity(bool ? ConstantUtil.UPDATE_SUCCESS : error,
                 bool ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

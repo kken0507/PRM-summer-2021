@@ -54,18 +54,27 @@ public class SessionServiceImpl implements SessionService {
         return objectMapper.convertValue(sessionRepository.save(newSession), OpenSessionResponseDto.class);
     }
 
-    @Override
-    @Transactional
-    public String closeSession(int sessionId, int updater) {
-        var session = sessionRepository.findById(sessionId).
-                orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND));
-        session.setStatus(SessionEnum.CLOSED);
-//        session.setUpdatedAt(LocalDateTime.now());
-//        session.setUpdatedBy(accountRepository.findById(updater).orElseThrow(() ->
-//                new ResourceNotFoundException(ACCOUNT, UPDATER_NOT_FOUND)).getId());
-        sessionRepository.save(session);
-        return "success";
-    }
+//    @Override
+//    @Transactional
+//    public String closeSession(int sessionId, int updater) {
+//        var session = sessionRepository.findById(sessionId).
+//                orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND));
+//        session.setStatus(SessionEnum.CLOSED);
+////        session.setUpdatedAt(LocalDateTime.now());
+////        session.setUpdatedBy(accountRepository.findById(updater).orElseThrow(() ->
+////                new ResourceNotFoundException(ACCOUNT, UPDATER_NOT_FOUND)).getId());
+//        sessionRepository.save(session);
+//        return "success";
+//    }
+
+//    @Override
+//    public boolean completeSession(int sessionId) {
+//        var session = sessionRepository.findById(sessionId).
+//                orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND));
+//        session.setStatus(SessionEnum.COMPLETED);
+//        sessionRepository.save(session);
+//        return true;
+//    }
 
     @Override
     public BillDto getBill(int sessionId) {
@@ -78,6 +87,16 @@ public class SessionServiceImpl implements SessionService {
 
         return billDto;
     }
+
+    @Override
+    public boolean changeStatus(int sessionId, SessionEnum sessionEnum) {
+        var session = sessionRepository.findById(sessionId).
+                orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND));
+        session.setStatus(sessionEnum);
+        sessionRepository.save(session);
+        return true;
+    }
+
 
     private Double calculateTotalPrice(Set<OrderDto> orderDtos) {
         double totalPrice = 0;
