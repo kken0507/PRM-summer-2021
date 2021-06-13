@@ -35,6 +35,9 @@ public class Item extends Audit {
     @Column(name = "isAvailable", nullable = false)
     private boolean isAvailable;
 
+    @Column(name = "img", length = 500)
+    private String img;
+
     @ManyToOne(optional = true, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "category_id", nullable = true)
     private Category category;

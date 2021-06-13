@@ -1,15 +1,12 @@
 package project.kien.restaurantmanagementsystemapi.dtos.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -26,6 +23,7 @@ public class AccountDto {
 
     @NotNull(message = "{account.password.notNull}")
     @Length(max = 100, message = "{account.password.length}")
+    @JsonIgnore
     private String password;
 
     @NotNull(message = "{account.role.notNull}")

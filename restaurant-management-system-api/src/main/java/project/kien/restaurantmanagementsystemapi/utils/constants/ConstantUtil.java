@@ -22,14 +22,13 @@ public class ConstantUtil {
 
     public static final String EXCEPTION_RESOURCE_NOT_FOUND = "Resource not found";
 
-    public static final String EXCEPTION_VALIDATION_FAILED = "Update to database failed";
+    public static final String EXCEPTION_VALIDATION_FAILED = "Validation failed";
 
     public static final String EXCEPTION_POLICY_VIOLATION = "Violated the policy";
 
     public static final String EXCEPTION_BAD_CREDENTIAL = "Invalid username or password";
 
     public static final String EXCEPTION_DISABLE_USER = "The user is disable";
-
 
 
     //Other

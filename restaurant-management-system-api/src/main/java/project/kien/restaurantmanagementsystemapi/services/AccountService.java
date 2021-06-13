@@ -10,4 +10,6 @@ public interface AccountService {
 
     Account findAccountByEmail(String email);
 
+    AccountDto findAccountById(Integer id);
+
 }

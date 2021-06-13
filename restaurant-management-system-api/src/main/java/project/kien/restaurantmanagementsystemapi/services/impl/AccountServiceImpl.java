@@ -30,4 +30,13 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Account", "cannot find account with email: " + email));
     }
+
+    @Override
+    public AccountDto findAccountById(Integer id) {
+        return accountMapper.toDto(
+                repository.findById(id)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException("Account", "cannot find account with id: " + id))
+        );
+    }
 }

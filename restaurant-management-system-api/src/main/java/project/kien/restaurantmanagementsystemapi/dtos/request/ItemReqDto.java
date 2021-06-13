@@ -27,5 +27,8 @@ public class ItemReqDto implements Serializable {
     @NotNull(message = "{item.isAvailable.notNull}")
     private Boolean isAvailable;
 
+    @Length(max = 500, message = "{item.img.length}")
+    private String img;
+
     private Integer categoryId;
 }

@@ -29,5 +29,8 @@ public class ItemDto implements Serializable {
     @NotNull(message = "{item.isAvailable.notNull}")
     private boolean isAvailable;
 
+    @Length(max = 500, message = "{item.img.length}")
+    private String img;
+
     private CategoryDto category;
 }
