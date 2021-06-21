@@ -13,4 +13,6 @@ public interface OrderService {
     boolean declineOrder(int orderId, String reason);
 
     boolean dropOrder(int orderId, String reason);
+
+    boolean confirmOrder(int orderId);
 }
