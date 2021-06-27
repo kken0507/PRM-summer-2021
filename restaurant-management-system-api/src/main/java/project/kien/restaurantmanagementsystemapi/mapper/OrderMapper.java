@@ -2,6 +2,7 @@ package project.kien.restaurantmanagementsystemapi.mapper;
 
 import org.mapstruct.*;
 import project.kien.restaurantmanagementsystemapi.dtos.common.OrderDto;
+import project.kien.restaurantmanagementsystemapi.dtos.response.OrderResDto;
 import project.kien.restaurantmanagementsystemapi.entities.Order;
 
 import java.util.Set;
@@ -39,5 +40,17 @@ public interface OrderMapper {
             @Mapping(target = "orderStatus", ignore = true),
     })
     OrderDto toDtoWithoutOrderStatus(Order entity);
+
+    @Named("noSessionForOrderResDto")
+    @IterableMapping(qualifiedByName = "noOrderSessionForOrderResDto")
+    Set<OrderResDto> tolistResDtoWithoutOrderAndSession(Set<Order> entity);
+
+    @Named("noOrderSessionForOrderResDto")
+    @Mappings({
+            @Mapping(target = "orderDetails", qualifiedByName = "noOrder"),
+            @Mapping(target = "orderStatus", qualifiedByName = "noOrder"),
+            @Mapping(target = "session", ignore = true),
+    })
+    OrderResDto toResDtoWithoutOrderAndSession(Order entity);
 
 }

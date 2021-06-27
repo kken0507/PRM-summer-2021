@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.kien.restaurantmanagementsystemapi.dtos.common.OrderDto;
+import project.kien.restaurantmanagementsystemapi.dtos.common.OrderStatusDto;
 import project.kien.restaurantmanagementsystemapi.dtos.common.SessionDto;
 import project.kien.restaurantmanagementsystemapi.dtos.request.OpenSessionRequestDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.BillDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.OpenSessionResponseDto;
+import project.kien.restaurantmanagementsystemapi.dtos.response.OrderResDto;
+import project.kien.restaurantmanagementsystemapi.dtos.response.SessionResDto;
 import project.kien.restaurantmanagementsystemapi.entities.Session;
 import project.kien.restaurantmanagementsystemapi.enums.SessionEnum;
 import project.kien.restaurantmanagementsystemapi.exceptions.ResourceNotFoundException;
@@ -18,7 +21,10 @@ import project.kien.restaurantmanagementsystemapi.services.SessionService;
 import project.kien.restaurantmanagementsystemapi.utils.tools.SessionNumberGenerator;
 
 import javax.transaction.Transactional;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -51,7 +57,7 @@ public class SessionServiceImpl implements SessionService {
 //                new ResourceNotFoundException(ACCOUNT, CREATOR_NOT_FOUND)).getId());
         /*=======================*/
 
-        return objectMapper.convertValue(sessionRepository.save(newSession), OpenSessionResponseDto.class);
+        return sessionMapper.toOpenSessionResponseDto(sessionRepository.save(newSession));
     }
 
 //    @Override
@@ -120,5 +126,14 @@ public class SessionServiceImpl implements SessionService {
         }
 
         return totalquantity;
+    }
+
+    @Override
+    public SessionResDto getSessionOrders(int sessionId) {
+        SessionResDto sessionDto = sessionMapper.toResDto(sessionRepository.findById(sessionId).
+                orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND)));
+        List<OrderResDto> orders = sessionDto.getOrders().stream().collect(Collectors.toList());
+        orders.stream().forEach(orderDto -> orderDto.setCurOrderStatus(orderDto.getOrderStatus().stream().min(Comparator.comparing(OrderStatusDto::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder()))).get()));
+        return sessionDto;
     }
 }

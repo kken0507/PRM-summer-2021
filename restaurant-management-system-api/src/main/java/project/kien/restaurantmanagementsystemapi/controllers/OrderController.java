@@ -25,7 +25,7 @@ public class OrderController {
     @ApiOperation(value = "This API create new order from list of items' ids")
     @ApiResponses(value = {@ApiResponse(code = 400, message = "Missing input", response = ErrorDto.class)})
     @PostMapping("/create")
-    public ResponseEntity<?> create(@Valid @RequestBody(required = true) List<OrderDetailReqDto> items, int sessionId) {
+    public ResponseEntity<?> create(@Valid @RequestBody(required = true) List<OrderDetailReqDto> items, @RequestParam(required = true) int sessionId) {
 
         boolean bool = service.create(items, sessionId);
 

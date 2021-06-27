@@ -8,6 +8,7 @@ import project.kien.restaurantmanagementsystemapi.dtos.common.ErrorDto;
 import project.kien.restaurantmanagementsystemapi.dtos.request.OpenSessionRequestDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.BillDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.OpenSessionResponseDto;
+import project.kien.restaurantmanagementsystemapi.dtos.response.SessionResDto;
 import project.kien.restaurantmanagementsystemapi.enums.SessionEnum;
 import project.kien.restaurantmanagementsystemapi.services.SessionService;
 import project.kien.restaurantmanagementsystemapi.utils.constants.ConstantUtil;
@@ -59,5 +60,10 @@ public class SessionController {
 
         return new ResponseEntity(bool ? ConstantUtil.UPDATE_SUCCESS : error,
                 bool ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping("/getSessionOrders/{sessionId}")
+    public SessionResDto getSessionOrders(@PathVariable("sessionId") int sessionId) {
+        return sessionService.getSessionOrders(sessionId);
     }
 }

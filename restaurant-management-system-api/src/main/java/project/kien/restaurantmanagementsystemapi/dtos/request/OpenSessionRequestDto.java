@@ -9,5 +9,5 @@ import lombok.Setter;
 @Setter
 public class OpenSessionRequestDto {
     String position;
-    int creator;
+//    int creator;
 }

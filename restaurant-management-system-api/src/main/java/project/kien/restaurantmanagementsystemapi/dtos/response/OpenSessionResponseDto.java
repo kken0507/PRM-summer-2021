@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class OpenSessionResponseDto {
+    int sessionId;
     String sessionNumber;
     String position;
     SessionEnum status;

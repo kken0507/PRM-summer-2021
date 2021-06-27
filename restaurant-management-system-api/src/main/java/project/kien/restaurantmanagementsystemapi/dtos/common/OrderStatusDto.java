@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderStatusDto {
+public class OrderStatusDto extends AuditDto {
     @NotNull(message = "{orderStatus.id.notNull}")
     private Integer id;
 
