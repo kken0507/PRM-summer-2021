@@ -13,6 +13,7 @@ import project.kien.restaurantmanagementsystemapi.enums.SessionEnum;
 import project.kien.restaurantmanagementsystemapi.services.SessionService;
 import project.kien.restaurantmanagementsystemapi.utils.constants.ConstantUtil;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 @RestController
@@ -22,7 +23,7 @@ public class SessionController {
     SessionService sessionService;
 
     @PostMapping("/openSession")
-    public OpenSessionResponseDto openSession(OpenSessionRequestDto request) {
+    public OpenSessionResponseDto openSession(@Valid OpenSessionRequestDto request) {
         return sessionService.openSession(request);
     }
 
