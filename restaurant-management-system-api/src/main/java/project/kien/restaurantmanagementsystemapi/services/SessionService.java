@@ -4,7 +4,10 @@ import project.kien.restaurantmanagementsystemapi.dtos.request.OpenSessionReques
 import project.kien.restaurantmanagementsystemapi.dtos.response.BillDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.OpenSessionResponseDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.SessionResDto;
+import project.kien.restaurantmanagementsystemapi.enums.OrderEnum;
 import project.kien.restaurantmanagementsystemapi.enums.SessionEnum;
+
+import java.util.List;
 
 public interface SessionService {
     OpenSessionResponseDto openSession(OpenSessionRequestDto request);
@@ -18,5 +21,9 @@ public interface SessionService {
     boolean changeStatus(int sessionId, SessionEnum sessionEnum);
 
     SessionResDto getSessionOrders(int sessionId);
+
+    List<SessionResDto> getOpeningSessionsByOrderStatus(OrderEnum status);
+
+    SessionResDto getOpeningSessionOrdersByOrderStatusAndSessionId(int sessionId, OrderEnum status);
 
 }

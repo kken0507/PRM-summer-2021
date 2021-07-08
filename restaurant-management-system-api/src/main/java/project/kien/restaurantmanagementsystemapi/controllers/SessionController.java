@@ -9,12 +9,14 @@ import project.kien.restaurantmanagementsystemapi.dtos.request.OpenSessionReques
 import project.kien.restaurantmanagementsystemapi.dtos.response.BillDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.OpenSessionResponseDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.SessionResDto;
+import project.kien.restaurantmanagementsystemapi.enums.OrderEnum;
 import project.kien.restaurantmanagementsystemapi.enums.SessionEnum;
 import project.kien.restaurantmanagementsystemapi.services.SessionService;
 import project.kien.restaurantmanagementsystemapi.utils.constants.ConstantUtil;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/session")
@@ -66,5 +68,15 @@ public class SessionController {
     @GetMapping("/getSessionOrders/{sessionId}")
     public SessionResDto getSessionOrders(@PathVariable("sessionId") int sessionId) {
         return sessionService.getSessionOrders(sessionId);
+    }
+
+    @GetMapping("/getSessionsByOrderStatus")
+    public List<SessionResDto> getSessionsByOrderStatus(@RequestParam(required = true) OrderEnum status) {
+        return sessionService.getOpeningSessionsByOrderStatus(status);
+    }
+
+    @GetMapping("/getOpeningSessionOrdersByOrderStatusAndSessionId/{sessionId}")
+    public SessionResDto getOpeningSessionOrdersByOrderStatusAndSessionId(@PathVariable("sessionId") int sessionId, @RequestParam(required = true) OrderEnum status) {
+        return sessionService.getOpeningSessionOrdersByOrderStatusAndSessionId(sessionId, status);
     }
 }

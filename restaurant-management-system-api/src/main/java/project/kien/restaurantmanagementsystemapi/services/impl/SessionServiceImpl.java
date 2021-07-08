@@ -12,6 +12,7 @@ import project.kien.restaurantmanagementsystemapi.dtos.response.OpenSessionRespo
 import project.kien.restaurantmanagementsystemapi.dtos.response.OrderResDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.SessionResDto;
 import project.kien.restaurantmanagementsystemapi.entities.Session;
+import project.kien.restaurantmanagementsystemapi.enums.OrderEnum;
 import project.kien.restaurantmanagementsystemapi.enums.SessionEnum;
 import project.kien.restaurantmanagementsystemapi.exceptions.ResourceNotFoundException;
 import project.kien.restaurantmanagementsystemapi.mapper.SessionMapper;
@@ -134,6 +135,30 @@ public class SessionServiceImpl implements SessionService {
                 orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND)));
         List<OrderResDto> orders = sessionDto.getOrders().stream().collect(Collectors.toList());
         orders.stream().forEach(orderDto -> orderDto.setCurOrderStatus(orderDto.getOrderStatus().stream().min(Comparator.comparing(OrderStatusDto::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder()))).get()));
+        return sessionDto;
+    }
+
+    @Override
+    public List<SessionResDto> getOpeningSessionsByOrderStatus(OrderEnum status) {
+        List<Session> sessionEntities = sessionRepository.findAllByStatus(SessionEnum.OPENING);
+        List<SessionResDto> sessionDtos = sessionMapper.toResDtos(sessionEntities);
+//        sessionDtos = sessionDtos.stream()
+//                .filter(sessionResDto -> sessionResDto.getOrders().stream().anyMatch(orderResDto -> orderResDto.getOrderStatus().stream().min(Comparator.comparing(OrderStatusDto::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder()))).get().getStatus().equals(status)))
+//                .collect(Collectors.toList());
+        sessionDtos.stream()
+                .forEach(sessionResDto -> sessionResDto.getOrders().stream().collect(Collectors.toList()).stream().forEach(orderDto -> orderDto.setCurOrderStatus(orderDto.getOrderStatus().stream().min(Comparator.comparing(OrderStatusDto::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder()))).get())));
+        sessionDtos.stream().forEach(sessionResDto -> sessionResDto.setOrders(sessionResDto.getOrders().stream().filter(orderResDto -> orderResDto.getCurOrderStatus().getStatus().equals(status)).collect(Collectors.toSet())));
+        sessionDtos = sessionDtos.stream().filter(sessionResDto -> sessionResDto.getOrders().stream().anyMatch(orderResDto -> orderResDto.getCurOrderStatus().getStatus().equals(status))).collect(Collectors.toList());
+        return sessionDtos;
+    }
+
+    @Override
+    public SessionResDto getOpeningSessionOrdersByOrderStatusAndSessionId(int sessionId, OrderEnum status) {
+        SessionResDto sessionDto = sessionMapper.toResDto(sessionRepository.findSessionByIdAndAndStatus(sessionId, SessionEnum.OPENING).
+                orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND)));
+        List<OrderResDto> orders = sessionDto.getOrders().stream().collect(Collectors.toList());
+        orders.stream().forEach(orderDto -> orderDto.setCurOrderStatus(orderDto.getOrderStatus().stream().min(Comparator.comparing(OrderStatusDto::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder()))).get()));
+        sessionDto.setOrders(sessionDto.getOrders().stream().filter(orderResDto -> orderResDto.getCurOrderStatus().getStatus().equals(status)).collect(Collectors.toSet()));
         return sessionDto;
     }
 }

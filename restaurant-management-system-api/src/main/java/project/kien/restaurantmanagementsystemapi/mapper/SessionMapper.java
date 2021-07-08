@@ -8,6 +8,8 @@ import project.kien.restaurantmanagementsystemapi.dtos.response.OpenSessionRespo
 import project.kien.restaurantmanagementsystemapi.dtos.response.SessionResDto;
 import project.kien.restaurantmanagementsystemapi.entities.Session;
 
+import java.util.List;
+
 @Mapper(uses = {OrderMapper.class, OrderStatusMapper.class, OrderDetailMapper.class}, componentModel = "spring")
 public interface SessionMapper {
 
@@ -25,6 +27,8 @@ public interface SessionMapper {
             @Mapping(target = "orders", qualifiedByName = "noSessionForOrderResDto"),
     })
     SessionResDto toResDto(Session entity);
+
+    List<SessionResDto> toResDtos(List<Session> entities);
 
 
 }

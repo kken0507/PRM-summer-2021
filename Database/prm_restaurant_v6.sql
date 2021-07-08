@@ -151,12 +151,13 @@ ADD CONSTRAINT UK_account_session_number UNIQUE (session_number);
 
 insert into `account` (id, email, password, role, isActive, avatar, fullname, phone, gender, dob, created_at, updated_at, created_by, updated_by) values
 (1, 'test@test.com', '$2a$10$gUHEBxXVGR0RuJ9YkMl6xuAOmjPKFGzZVOno7gURSkIGLY4yTEakK', 'MANAGER', true, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'Nguyen Van An', '0909333555', 'M', '2000-01-01', now(), null,1, null),
-(2, 'test2@test.com', '$2a$10$gUHEBxXVGR0RuJ9YkMl6xuAOmjPKFGzZVOno7gURSkIGLY4yTEakK', 'STAFF', true, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'Nguyen Thi Be', '0909333666', 'F', '2001-01-01', now(), now(),1, 1);
+(2, 'test2@test.com', '$2a$10$gUHEBxXVGR0RuJ9YkMl6xuAOmjPKFGzZVOno7gURSkIGLY4yTEakK', 'STAFF', true, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'Nguyen Thi Be', '0909333666', 'F', '2001-01-01', now(), now(),1, 1),
+(3, 'test3@test.com', '$2a$10$gUHEBxXVGR0RuJ9YkMl6xuAOmjPKFGzZVOno7gURSkIGLY4yTEakK', 'CUSTOMER', true, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'Customer', '0000000000', 'M', '2001-01-01', now(), now(),1, 1);
 
 insert into category (id, name, created_at, updated_at, created_by, updated_by) values
 (1, 'food', now(), now(),1, 1),
 (2, 'beverage', now(), now(),1, 1);
 
 insert into item (id, name, price, description, isAvailable, img, category_id, created_at, updated_at, created_by, updated_by) values
-(1, 'sua da', 15000, 'ca phe sua da nha lam', true, "https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80", 2, now(), now(),1, 1),
-(2, 'banh mi', 18000, 'banh mi kep heo quay', true, "https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80", 1, now(), now(),1, 1);
+(1, 'sua da', 15000, 'ca phe sua da nha lam', true, "https://st2.depositphotos.com/2461721/8057/i/950/depositphotos_80575630-stock-photo-ice-coffee.jpg", 2, now(), now(),1, 1),
+(2, 'banh mi', 18000, 'banh mi kep heo quay', true, "https://st2.depositphotos.com/3935465/6480/i/950/depositphotos_64809727-stock-photo-fresh-homemade-whole-wheat-bread.jpg", 1, now(), now(),1, 1);

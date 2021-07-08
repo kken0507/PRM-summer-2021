@@ -39,7 +39,7 @@ public class OrderController {
     }
 
     @PostMapping("/declineOrder/{orderId}")
-    public ResponseEntity<?> declineOrder(@PathVariable("orderId") int orderId, @RequestParam(required = true) String reason) {
+    public ResponseEntity<?> declineOrder(@PathVariable("orderId") int orderId, @RequestBody(required = true) String reason) {
         boolean bool = service.declineOrder(orderId, reason);
 
         ErrorDto error = new ErrorDto(LocalDateTime.now().toString(),
@@ -52,7 +52,7 @@ public class OrderController {
     }
 
     @PostMapping("/dropOrder/{orderId}")
-    public ResponseEntity<?> dropOrder(@PathVariable("orderId") int orderId, @RequestParam(required = true) String reason) {
+    public ResponseEntity<?> dropOrder(@PathVariable("orderId") int orderId, @RequestBody(required = true) String reason) {
         boolean bool = service.dropOrder(orderId, reason);
 
         ErrorDto error = new ErrorDto(LocalDateTime.now().toString(),
