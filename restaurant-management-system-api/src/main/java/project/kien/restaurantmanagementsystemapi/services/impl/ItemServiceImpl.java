@@ -99,14 +99,14 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Page<ItemResDto> search(String name, Boolean isItemAvailable, Pageable pageable) {
         if (name != null && !name.isEmpty() && isItemAvailable != null) {
-            Page<Item> page = itemRepository.findByNameLikeAndAndAvailable("%" + name + "%", isItemAvailable.booleanValue(), pageable);
+            Page<Item> page = itemRepository.findByNameLikeAndIsAvailable("%" + name + "%", isItemAvailable.booleanValue(), pageable);
             List list = page
                     .map(item -> itemMapper.toResDto(item))
                     .stream()
                     .collect(Collectors.toList());
             return new PageImpl<>(list, pageable, page.getTotalElements());
         } else if (isItemAvailable != null) {
-            Page<Item> page = itemRepository.findAllByAvailable(isItemAvailable.booleanValue(), pageable);
+            Page<Item> page = itemRepository.findAllByIsAvailable(isItemAvailable.booleanValue(), pageable);
             List list = page
                     .map(item -> itemMapper.toResDto(item))
                     .stream()
@@ -126,6 +126,39 @@ public class ItemServiceImpl implements ItemService {
                     .stream()
                     .collect(Collectors.toList());
             return new PageImpl<>(list, pageable, page.getTotalElements());
+        }
+    }
+
+    @Override
+    public List<ItemResDto> searchToList(String name, Boolean isItemAvailable) {
+        if (name != null && !name.isEmpty() && isItemAvailable != null) {
+            List<Item> page = itemRepository.findByNameLikeAndIsAvailable("%" + name + "%", isItemAvailable.booleanValue());
+            List list = page
+                    .stream()
+                    .map(item -> itemMapper.toResDto(item))
+                    .collect(Collectors.toList());
+            return list;
+        } else if (isItemAvailable != null) {
+            List<Item> page = itemRepository.findAllByIsAvailable(isItemAvailable.booleanValue());
+            List list = page
+                    .stream()
+                    .map(item -> itemMapper.toResDto(item))
+                    .collect(Collectors.toList());
+            return list;
+        } else if (name != null && !name.isEmpty()) {
+            List<Item> page = itemRepository.findByNameLike("%" + name + "%");
+            List list = page
+                    .stream()
+                    .map(item -> itemMapper.toResDto(item))
+                    .collect(Collectors.toList());
+            return list;
+        } else {
+            List<Item> page = itemRepository.findAll();
+            List list = page
+                    .stream()
+                    .map(item -> itemMapper.toResDto(item))
+                    .collect(Collectors.toList());
+            return list;
         }
     }
 }

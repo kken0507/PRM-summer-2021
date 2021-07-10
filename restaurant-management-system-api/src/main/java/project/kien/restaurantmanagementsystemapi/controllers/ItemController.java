@@ -52,7 +52,7 @@ public class ItemController {
     @ApiOperation(value = "This API update a item by id")
     @ApiResponses(value = {@ApiResponse(code = 400, message = "Missing input", response = ErrorDto.class)})
     @PostMapping("/update/{itemId}")
-    public ResponseEntity<?> create(@NotNull @PathVariable("itemId") int id, @Valid @RequestBody(required = true) ItemReqDto item) {
+    public ResponseEntity<?> create(@NotNull @PathVariable("itemId") int id, @RequestBody(required = true) ItemReqDto item) {
 
         boolean bool = service.update(id, item);
 
@@ -87,6 +87,11 @@ public class ItemController {
     @ApiPageable
     public Page<ItemResDto> search(@RequestParam(required = false, value = "name") String name, @RequestParam(required = false, value = "isAvailable") Boolean isAvailable, @ApiIgnore("Ignored because swagger ui shows the wrong params") Pageable pageable) {
         return service.search(name, isAvailable, pageable);
+    }
+
+    @GetMapping("/searchToList")
+    public List<ItemResDto> searchToList(@RequestParam(required = false, value = "name") String name, @RequestParam(required = false, value = "isAvailable") Boolean isAvailable) {
+        return service.searchToList(name, isAvailable);
     }
 
 }

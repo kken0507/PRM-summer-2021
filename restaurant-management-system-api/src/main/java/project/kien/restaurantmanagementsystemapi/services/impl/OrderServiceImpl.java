@@ -140,6 +140,7 @@ public class OrderServiceImpl implements OrderService {
         return false;
     }
 
+    @Override
     public boolean confirmOrder(int orderId) {
         Order order = orderRepository.findById(orderId).
                 orElseThrow(() -> new ResourceNotFoundException("Order", "Order is not found"));
@@ -150,6 +151,26 @@ public class OrderServiceImpl implements OrderService {
         if (curOrderStatus.getStatus().equals(OrderEnum.PENDING)) {
 
             changeStatus(orderId, OrderEnum.CONFIRMED, "");
+
+            return true;
+
+        } else if (curOrderStatus.getStatus() != null && !curOrderStatus.getStatus().toString().isEmpty()) {
+            throw new InvalidRequestException("Can not confirmed order because status is " + curOrderStatus.getStatus());
+        }
+
+        return false;
+    }
+
+    public boolean serveOrder(int orderId) {
+        Order order = orderRepository.findById(orderId).
+                orElseThrow(() -> new ResourceNotFoundException("Order", "Order is not found"));
+
+        OrderStatus curOrderStatus = orderStatusRepository.getDistinctTopByCustomerOrder_IdOrderByCreatedAtDesc(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("OrderStatus", "Current order status is not found"));
+
+        if (curOrderStatus.getStatus().equals(OrderEnum.CONFIRMED)) {
+
+            changeStatus(orderId, OrderEnum.SERVED, "");
 
             return true;
 

@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDto {
+public class OrderDto extends AuditDto {
 
     @NotNull(message = "{order.id.notNull}")
     private Integer id;

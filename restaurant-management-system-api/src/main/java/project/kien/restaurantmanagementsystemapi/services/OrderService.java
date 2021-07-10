@@ -15,4 +15,6 @@ public interface OrderService {
     boolean dropOrder(int orderId, String reason);
 
     boolean confirmOrder(int orderId);
+
+    boolean serveOrder(int orderId);
 }

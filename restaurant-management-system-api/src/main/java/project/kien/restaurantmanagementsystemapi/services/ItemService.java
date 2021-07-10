@@ -17,4 +17,7 @@ public interface ItemService {
     boolean delete(Integer itemId);
 
     Page<ItemResDto> search(String name, Boolean isItemAvailable, Pageable pageable);
+
+    List<ItemResDto> searchToList(String name, Boolean isItemAvailable);
+
 }

@@ -16,11 +16,13 @@ public interface SessionService {
 
     BillDto getBill(int sessionId);
 
+    BillDto getBillBySessionNum(String sessionNum);
+
 //    boolean completeSession(int sessionId);
 
     boolean changeStatus(int sessionId, SessionEnum sessionEnum);
 
-    SessionResDto getSessionOrders(int sessionId);
+    SessionResDto getSession(int sessionId);
 
     List<SessionResDto> getOpeningSessionsByOrderStatus(OrderEnum status);
 

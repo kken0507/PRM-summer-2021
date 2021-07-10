@@ -21,7 +21,6 @@ public class OrderStatusDto extends AuditDto {
     @Length(max = 50, message = "{orderStatus.status.length}")
     private OrderEnum status;
 
-
     private OrderDto customerOrder;
 
     @Length(max = 500, message = "{orderStatus.content.length}")

@@ -39,6 +39,11 @@ public class SessionController {
         return sessionService.getBill(sessionId);
     }
 
+    @GetMapping("/getBillBySessionNum")
+    public BillDto getBill(@RequestParam(required = true) String sessionNum) {
+        return sessionService.getBillBySessionNum(sessionNum);
+    }
+
     @PostMapping("/closeSession/{sessionId}")
     public ResponseEntity<?> closeSession(@PathVariable("sessionId") int sessionId) {
         boolean bool = sessionService.changeStatus(sessionId, SessionEnum.CLOSED);
@@ -65,9 +70,9 @@ public class SessionController {
                 bool ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @GetMapping("/getSessionOrders/{sessionId}")
-    public SessionResDto getSessionOrders(@PathVariable("sessionId") int sessionId) {
-        return sessionService.getSessionOrders(sessionId);
+    @GetMapping("/getSession/{sessionId}")
+    public SessionResDto getSession(@PathVariable("sessionId") int sessionId) {
+        return sessionService.getSession(sessionId);
     }
 
     @GetMapping("/getSessionsByOrderStatus")

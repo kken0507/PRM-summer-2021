@@ -76,4 +76,17 @@ public class OrderController {
         return new ResponseEntity(bool ? ConstantUtil.UPDATE_SUCCESS : error,
                 bool ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @PostMapping("/serveOrder/{orderId}")
+    public ResponseEntity<?> serveOrder(@PathVariable("orderId") int orderId) {
+        boolean bool = service.serveOrder(orderId);
+
+        ErrorDto error = new ErrorDto(LocalDateTime.now().toString(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "INTERNAL SERVER ERROR",
+                "Failed to serve the order");
+
+        return new ResponseEntity(bool ? ConstantUtil.UPDATE_SUCCESS : error,
+                bool ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

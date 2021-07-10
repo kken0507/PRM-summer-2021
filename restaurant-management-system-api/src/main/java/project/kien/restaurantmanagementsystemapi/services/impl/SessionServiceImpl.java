@@ -96,6 +96,18 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
+    public BillDto getBillBySessionNum(String sessionNum) {
+        BillDto billDto = new BillDto();
+        SessionDto sessionDto = sessionMapper.toDto(sessionRepository.findBySessionNumber(sessionNum).
+                orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND)));
+        billDto.setTotalPrice(calculateTotalPrice(sessionDto.getOrders()));
+        billDto.setTotalItemQuantity(calculateTotalItemQuantity(sessionDto.getOrders()));
+        billDto.setSession(sessionDto);
+
+        return billDto;
+    }
+
+    @Override
     public boolean changeStatus(int sessionId, SessionEnum sessionEnum) {
         var session = sessionRepository.findById(sessionId).
                 orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND));
@@ -130,7 +142,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public SessionResDto getSessionOrders(int sessionId) {
+    public SessionResDto getSession(int sessionId) {
         SessionResDto sessionDto = sessionMapper.toResDto(sessionRepository.findById(sessionId).
                 orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND)));
         List<OrderResDto> orders = sessionDto.getOrders().stream().collect(Collectors.toList());
