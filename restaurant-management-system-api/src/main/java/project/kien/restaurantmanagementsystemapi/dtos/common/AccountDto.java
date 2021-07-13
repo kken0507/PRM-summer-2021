@@ -31,7 +31,7 @@ public class AccountDto {
     private String role;
 
     @NotNull(message = "{account.isActive.notNull}")
-    private boolean isActive;
+    private Boolean isActive;
 
     @Length(max = 500, message = "{account.avatar.length}")
     private String avatar;

@@ -40,7 +40,7 @@ public class UserPrincipal implements UserDetails {
         id = account.getId();
         email = account.getEmail();
         password = account.getPassword();
-        isActive = account.isActive();
+        isActive = account.getIsActive().booleanValue();
         role = account.getRole();
     }
 

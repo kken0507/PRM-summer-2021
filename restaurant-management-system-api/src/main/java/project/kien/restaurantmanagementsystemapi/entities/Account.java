@@ -35,7 +35,7 @@ public class Account extends Audit {
     private String role;
 
     @Column(name = "isActive", nullable = false)
-    private boolean isActive;
+    private Boolean isActive;
 
     @Column(name = "avatar", length = 500)
     private String avatar;

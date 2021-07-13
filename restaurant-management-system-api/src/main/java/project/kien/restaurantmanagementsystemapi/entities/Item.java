@@ -33,7 +33,7 @@ public class Item extends Audit {
     private String description;
 
     @Column(name = "isAvailable", nullable = false)
-    private boolean isAvailable;
+    private Boolean isAvailable;
 
     @Column(name = "img", length = 500)
     private String img;

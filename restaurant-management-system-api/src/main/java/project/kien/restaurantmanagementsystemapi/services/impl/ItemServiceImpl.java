@@ -72,7 +72,7 @@ public class ItemServiceImpl implements ItemService {
             isUpdated = true;
         }
         if (dto.getIsAvailable() != null) {
-            item.setAvailable(dto.getIsAvailable().booleanValue());
+            item.setIsAvailable(dto.getIsAvailable().booleanValue());
             isUpdated = true;
         }
         if (dto.getCategoryId() != null) {

@@ -160,4 +160,5 @@ insert into category (id, name, created_at, updated_at, created_by, updated_by) 
 
 insert into item (id, name, price, description, isAvailable, img, category_id, created_at, updated_at, created_by, updated_by) values
 (1, 'sua da', 15000, 'ca phe sua da nha lam', true, "https://st2.depositphotos.com/2461721/8057/i/950/depositphotos_80575630-stock-photo-ice-coffee.jpg", 2, now(), now(),1, 1),
-(2, 'banh mi', 18000, 'banh mi kep heo quay', true, "https://st2.depositphotos.com/3935465/6480/i/950/depositphotos_64809727-stock-photo-fresh-homemade-whole-wheat-bread.jpg", 1, now(), now(),1, 1);
+(2, 'banh mi', 18000, 'banh mi kep heo quay', true, "https://st2.depositphotos.com/3935465/6480/i/950/depositphotos_64809727-stock-photo-fresh-homemade-whole-wheat-bread.jpg", 1, now(), now(),1, 1),
+(3, 'ca cao nong', 12000, 'ca cao nong', true, "https://st.depositphotos.com/1000348/3425/i/950/depositphotos_34255953-stock-photo-hot-chocolate-chocolate-chips-cinnamon.jpg", 1, now(), now(),1, 1);

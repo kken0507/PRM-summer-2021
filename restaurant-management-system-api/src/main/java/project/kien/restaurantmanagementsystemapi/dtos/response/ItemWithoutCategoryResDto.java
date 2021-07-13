@@ -27,5 +27,5 @@ public class ItemWithoutCategoryResDto implements Serializable {
     private String description;
 
     @NotNull(message = "{item.isAvailable.notNull}")
-    private boolean isAvailable;
+    private Boolean isAvailable;
 }
