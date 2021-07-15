@@ -32,4 +32,6 @@ public interface SessionService {
 
     boolean completeSession(int sessionId);
 
+    BillDto getBillBySessionNumForClosedSession(String sessionNum);
+
 }

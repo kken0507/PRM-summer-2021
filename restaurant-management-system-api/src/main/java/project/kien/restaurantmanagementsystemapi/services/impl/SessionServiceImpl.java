@@ -116,6 +116,21 @@ public class SessionServiceImpl implements SessionService {
         return billDto;
     }
 
+    @Override
+    public BillDto getBillBySessionNumForClosedSession(String sessionNum) {
+        BillDto billDto = new BillDto();
+        SessionDto sessionDto = sessionMapper.toDto(sessionRepository.findBySessionNumberAndStatus(sessionNum, SessionEnum.CLOSED).
+                orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND)));
+        Set<OrderDto> tmpOrders = getServedOrders(sessionDto);
+        sessionDto.setOrders(tmpOrders);
+        billDto.setTotalPrice(calculateTotalPrice(sessionDto.getOrders()));
+        billDto.setTotalItemQuantity(calculateTotalItemQuantity(sessionDto.getOrders()));
+        billDto.setSession(sessionDto);
+        billDto.setItems(getServedItems(tmpOrders));
+
+        return billDto;
+    }
+
     private Set<OrderDto> getServedOrders(SessionDto sessionDto) {
         return sessionDto.getOrders()
                 .stream()

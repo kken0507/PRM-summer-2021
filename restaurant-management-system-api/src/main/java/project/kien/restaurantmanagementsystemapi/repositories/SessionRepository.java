@@ -15,4 +15,6 @@ public interface SessionRepository extends JpaRepository<Session, Integer> {
     Optional<Session> findSessionByIdAndAndStatus(int sessionId, SessionEnum status);
 
     Optional<Session> findBySessionNumber(String sessionNum);
+
+    Optional<Session> findBySessionNumberAndStatus(String sessionNum, SessionEnum status);
 }

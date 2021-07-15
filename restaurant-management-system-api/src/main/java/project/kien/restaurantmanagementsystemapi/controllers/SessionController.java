@@ -40,7 +40,7 @@ public class SessionController {
 
     @GetMapping("/getBillBySessionNum")
     public BillDto getBill(@RequestParam(required = true) String sessionNum) {
-        return sessionService.getBillBySessionNum(sessionNum);
+        return sessionService.getBillBySessionNumForClosedSession(sessionNum);
     }
 
     @PostMapping("/closeSession/{sessionId}")
