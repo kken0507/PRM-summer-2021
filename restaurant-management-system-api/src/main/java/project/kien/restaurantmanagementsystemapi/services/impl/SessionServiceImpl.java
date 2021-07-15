@@ -88,6 +88,8 @@ public class SessionServiceImpl implements SessionService {
         BillDto billDto = new BillDto();
         SessionDto sessionDto = sessionMapper.toDto(sessionRepository.findById(sessionId).
                 orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND)));
+        Set<OrderDto> tmpOrders = getServedOrders(sessionDto);
+        sessionDto.setOrders(tmpOrders);
         billDto.setTotalPrice(calculateTotalPrice(sessionDto.getOrders()));
         billDto.setTotalItemQuantity(calculateTotalItemQuantity(sessionDto.getOrders()));
         billDto.setSession(sessionDto);
@@ -100,11 +102,23 @@ public class SessionServiceImpl implements SessionService {
         BillDto billDto = new BillDto();
         SessionDto sessionDto = sessionMapper.toDto(sessionRepository.findBySessionNumber(sessionNum).
                 orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND)));
+        Set<OrderDto> tmpOrders = getServedOrders(sessionDto);
+        sessionDto.setOrders(tmpOrders);
         billDto.setTotalPrice(calculateTotalPrice(sessionDto.getOrders()));
         billDto.setTotalItemQuantity(calculateTotalItemQuantity(sessionDto.getOrders()));
         billDto.setSession(sessionDto);
 
         return billDto;
+    }
+
+    private Set<OrderDto> getServedOrders(SessionDto sessionDto) {
+        return sessionDto.getOrders()
+                .stream()
+                .filter(orderDto -> orderDto.getOrderStatus()
+                        .stream()
+                        .min(Comparator.comparing(OrderStatusDto::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder())))
+                        .get().getStatus().equals(OrderEnum.SERVED))
+                .collect(Collectors.toSet());
     }
 
     @Override
