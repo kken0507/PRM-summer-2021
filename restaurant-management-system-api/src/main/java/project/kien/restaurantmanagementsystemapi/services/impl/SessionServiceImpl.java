@@ -122,20 +122,28 @@ public class SessionServiceImpl implements SessionService {
     private List<ItemBillDto> getServedItems(Set<OrderDto> servedOrders) {
         Map<Integer, Integer> quantities = new HashMap<>();
         Map<Integer, ItemDto> items = new HashMap<>();
+        Map<Integer, Double> prices = new HashMap<>();
         List<ItemBillDto> res = new ArrayList<>();
+
         servedOrders.stream().forEach(orderDto -> {
             orderDto.getOrderDetails().stream().forEach(orderDetailDto -> {
                 if (quantities.containsKey(orderDetailDto.getItem().getId())) {
                     int oldValue = quantities.get(orderDetailDto.getItem().getId());
                     quantities.replace(orderDetailDto.getItem().getId(), (oldValue + orderDetailDto.getQuantity()));
+
+                    double oldPrice = prices.get(orderDetailDto.getItem().getId());
+                    double newPrice = orderDetailDto.getQuantity() * orderDetailDto.getItem().getPrice();
+                    prices.replace(orderDetailDto.getItem().getId(), (oldPrice + newPrice));
+
                 } else {
                     quantities.put(orderDetailDto.getItem().getId(), orderDetailDto.getQuantity());
+                    prices.put(orderDetailDto.getItem().getId(), (orderDetailDto.getQuantity() * orderDetailDto.getItem().getPrice()));
                     items.put(orderDetailDto.getItem().getId(), orderDetailDto.getItem());
                 }
             });
         });
 
-        quantities.forEach((id, quantity) -> res.add(new ItemBillDto(quantity, items.get(id))));
+        quantities.forEach((id, quantity) -> res.add(new ItemBillDto(quantity, items.get(id), prices.get(id))));
 
         return res;
     }

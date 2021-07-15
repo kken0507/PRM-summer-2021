@@ -15,5 +15,7 @@ public class ItemBillDto {
     private Integer quantity;
 
     private ItemDto item;
-    
+
+    private Double price;
+
 }
