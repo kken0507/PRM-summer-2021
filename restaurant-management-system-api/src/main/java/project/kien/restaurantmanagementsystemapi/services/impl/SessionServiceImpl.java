@@ -2,6 +2,7 @@ package project.kien.restaurantmanagementsystemapi.services.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import project.kien.restaurantmanagementsystemapi.dtos.common.ItemDto;
 import project.kien.restaurantmanagementsystemapi.dtos.common.OrderDto;
@@ -10,12 +11,16 @@ import project.kien.restaurantmanagementsystemapi.dtos.common.SessionDto;
 import project.kien.restaurantmanagementsystemapi.dtos.request.OpenSessionRequestDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.*;
 import project.kien.restaurantmanagementsystemapi.entities.Session;
+import project.kien.restaurantmanagementsystemapi.enums.ErrorStatus;
 import project.kien.restaurantmanagementsystemapi.enums.OrderEnum;
 import project.kien.restaurantmanagementsystemapi.enums.SessionEnum;
+import project.kien.restaurantmanagementsystemapi.exceptions.CustomException;
+import project.kien.restaurantmanagementsystemapi.exceptions.InvalidRequestException;
 import project.kien.restaurantmanagementsystemapi.exceptions.ResourceNotFoundException;
 import project.kien.restaurantmanagementsystemapi.mapper.SessionMapper;
 import project.kien.restaurantmanagementsystemapi.repositories.AccountRepository;
 import project.kien.restaurantmanagementsystemapi.repositories.SessionRepository;
+import project.kien.restaurantmanagementsystemapi.services.OrderService;
 import project.kien.restaurantmanagementsystemapi.services.SessionService;
 import project.kien.restaurantmanagementsystemapi.utils.tools.SessionNumberGenerator;
 
@@ -33,6 +38,8 @@ public class SessionServiceImpl implements SessionService {
     ObjectMapper objectMapper;
     @Autowired
     SessionMapper sessionMapper;
+    @Autowired
+    OrderService orderService;
 
     static private final String SESSION = "SESSION";
     static private final String ACCOUNT = "ACCOUNT";
@@ -213,5 +220,49 @@ public class SessionServiceImpl implements SessionService {
         orders.stream().forEach(orderDto -> orderDto.setCurOrderStatus(orderDto.getOrderStatus().stream().min(Comparator.comparing(OrderStatusDto::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder()))).get()));
         sessionDto.setOrders(sessionDto.getOrders().stream().filter(orderResDto -> orderResDto.getCurOrderStatus().getStatus().equals(status)).collect(Collectors.toSet()));
         return sessionDto;
+    }
+
+    @Override
+    @Transactional
+    public boolean closeSession(int sessionId) {
+        boolean res = false;
+
+        SessionResDto sessionDto = sessionMapper.toResDto(sessionRepository.findSessionByIdAndAndStatus(sessionId, SessionEnum.OPENING).
+                orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND)));
+
+        List<OrderResDto> orders = sessionDto.getOrders().stream().collect(Collectors.toList());
+        orders.stream().forEach(orderDto -> orderDto.setCurOrderStatus(orderDto.getOrderStatus().stream().min(Comparator.comparing(OrderStatusDto::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder()))).get()));
+        List<OrderResDto> pendingList = sessionDto.getOrders().stream().filter(orderResDto -> orderResDto.getCurOrderStatus().getStatus().equals(OrderEnum.PENDING)).collect(Collectors.toList());
+        List<OrderResDto> confirmedList = sessionDto.getOrders().stream().filter(orderResDto -> orderResDto.getCurOrderStatus().getStatus().equals(OrderEnum.CONFIRMED)).collect(Collectors.toList());
+
+        if (confirmedList.isEmpty()) {
+            for (OrderResDto dto : pendingList
+            ) {
+                boolean flag = false;
+                flag = orderService.declineOrder(dto.getId(), "Customer checkout");
+                if (!flag) {
+                    throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, ErrorStatus.COMMON_DATABSE_ERROR.getReason(), "Close session failed - Decline pending items failed");
+                }
+            }
+        } else {
+            throw new InvalidRequestException("Confirmed items exist - These items need to be served or dropped");
+        }
+
+        res = changeStatus(sessionId, SessionEnum.CLOSED);
+
+        return res;
+    }
+
+    @Override
+    @Transactional
+    public boolean completeSession(int sessionId) {
+        boolean res = false;
+
+        sessionMapper.toResDto(sessionRepository.findSessionByIdAndAndStatus(sessionId, SessionEnum.CLOSED)
+                .orElseThrow(() -> new ResourceNotFoundException(SESSION, SESSION_NOT_FOUND)));
+
+        res = changeStatus(sessionId, SessionEnum.COMPLETED);
+
+        return res;
     }
 }

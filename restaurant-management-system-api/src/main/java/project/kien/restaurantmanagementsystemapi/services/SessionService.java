@@ -28,4 +28,8 @@ public interface SessionService {
 
     SessionResDto getOpeningSessionOrdersByOrderStatusAndSessionId(int sessionId, OrderEnum status);
 
+    boolean closeSession(int sessionId);
+
+    boolean completeSession(int sessionId);
+
 }

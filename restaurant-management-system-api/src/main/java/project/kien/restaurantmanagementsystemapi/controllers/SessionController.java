@@ -10,7 +10,6 @@ import project.kien.restaurantmanagementsystemapi.dtos.response.BillDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.OpenSessionResponseDto;
 import project.kien.restaurantmanagementsystemapi.dtos.response.SessionResDto;
 import project.kien.restaurantmanagementsystemapi.enums.OrderEnum;
-import project.kien.restaurantmanagementsystemapi.enums.SessionEnum;
 import project.kien.restaurantmanagementsystemapi.services.SessionService;
 import project.kien.restaurantmanagementsystemapi.utils.constants.ConstantUtil;
 
@@ -46,7 +45,9 @@ public class SessionController {
 
     @PostMapping("/closeSession/{sessionId}")
     public ResponseEntity<?> closeSession(@PathVariable("sessionId") int sessionId) {
-        boolean bool = sessionService.changeStatus(sessionId, SessionEnum.CLOSED);
+//        boolean bool = sessionService.changeStatus(sessionId, SessionEnum.CLOSED);
+
+        boolean bool = sessionService.closeSession(sessionId);
 
         ErrorDto error = new ErrorDto(LocalDateTime.now().toString(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
@@ -59,7 +60,9 @@ public class SessionController {
 
     @PostMapping("/completeSession/{sessionId}")
     public ResponseEntity<?> completeSession(@PathVariable("sessionId") int sessionId) {
-        boolean bool = sessionService.changeStatus(sessionId, SessionEnum.COMPLETED);
+//        boolean bool = sessionService.changeStatus(sessionId, SessionEnum.COMPLETED);
+
+        boolean bool = sessionService.completeSession(sessionId);
 
         ErrorDto error = new ErrorDto(LocalDateTime.now().toString(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
