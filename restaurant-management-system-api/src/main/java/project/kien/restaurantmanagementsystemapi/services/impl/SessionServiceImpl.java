@@ -3,14 +3,12 @@ package project.kien.restaurantmanagementsystemapi.services.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.kien.restaurantmanagementsystemapi.dtos.common.ItemDto;
 import project.kien.restaurantmanagementsystemapi.dtos.common.OrderDto;
 import project.kien.restaurantmanagementsystemapi.dtos.common.OrderStatusDto;
 import project.kien.restaurantmanagementsystemapi.dtos.common.SessionDto;
 import project.kien.restaurantmanagementsystemapi.dtos.request.OpenSessionRequestDto;
-import project.kien.restaurantmanagementsystemapi.dtos.response.BillDto;
-import project.kien.restaurantmanagementsystemapi.dtos.response.OpenSessionResponseDto;
-import project.kien.restaurantmanagementsystemapi.dtos.response.OrderResDto;
-import project.kien.restaurantmanagementsystemapi.dtos.response.SessionResDto;
+import project.kien.restaurantmanagementsystemapi.dtos.response.*;
 import project.kien.restaurantmanagementsystemapi.entities.Session;
 import project.kien.restaurantmanagementsystemapi.enums.OrderEnum;
 import project.kien.restaurantmanagementsystemapi.enums.SessionEnum;
@@ -22,9 +20,7 @@ import project.kien.restaurantmanagementsystemapi.services.SessionService;
 import project.kien.restaurantmanagementsystemapi.utils.tools.SessionNumberGenerator;
 
 import javax.transaction.Transactional;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,6 +89,7 @@ public class SessionServiceImpl implements SessionService {
         billDto.setTotalPrice(calculateTotalPrice(sessionDto.getOrders()));
         billDto.setTotalItemQuantity(calculateTotalItemQuantity(sessionDto.getOrders()));
         billDto.setSession(sessionDto);
+        billDto.setItems(getServedItems(tmpOrders));
 
         return billDto;
     }
@@ -107,6 +104,7 @@ public class SessionServiceImpl implements SessionService {
         billDto.setTotalPrice(calculateTotalPrice(sessionDto.getOrders()));
         billDto.setTotalItemQuantity(calculateTotalItemQuantity(sessionDto.getOrders()));
         billDto.setSession(sessionDto);
+        billDto.setItems(getServedItems(tmpOrders));
 
         return billDto;
     }
@@ -119,6 +117,27 @@ public class SessionServiceImpl implements SessionService {
                         .min(Comparator.comparing(OrderStatusDto::getCreatedAt, Comparator.nullsLast(Comparator.reverseOrder())))
                         .get().getStatus().equals(OrderEnum.SERVED))
                 .collect(Collectors.toSet());
+    }
+
+    private List<ItemBillDto> getServedItems(Set<OrderDto> servedOrders) {
+        Map<Integer, Integer> quantities = new HashMap<>();
+        Map<Integer, ItemDto> items = new HashMap<>();
+        List<ItemBillDto> res = new ArrayList<>();
+        servedOrders.stream().forEach(orderDto -> {
+            orderDto.getOrderDetails().stream().forEach(orderDetailDto -> {
+                if (quantities.containsKey(orderDetailDto.getItem().getId())) {
+                    int oldValue = quantities.get(orderDetailDto.getItem().getId());
+                    quantities.replace(orderDetailDto.getItem().getId(), (oldValue + orderDetailDto.getQuantity()));
+                } else {
+                    quantities.put(orderDetailDto.getItem().getId(), orderDetailDto.getQuantity());
+                    items.put(orderDetailDto.getItem().getId(), orderDetailDto.getItem());
+                }
+            });
+        });
+
+        quantities.forEach((id, quantity) -> res.add(new ItemBillDto(quantity, items.get(id))));
+
+        return res;
     }
 
     @Override

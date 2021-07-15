@@ -7,6 +7,7 @@ import lombok.Setter;
 import project.kien.restaurantmanagementsystemapi.dtos.common.SessionDto;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,6 +15,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class BillDto implements Serializable {
     private SessionDto session;
+
+    private List<ItemBillDto> items;
+
     private double totalPrice;
+
     private int totalItemQuantity;
 }
