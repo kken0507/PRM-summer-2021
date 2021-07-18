@@ -59,6 +59,10 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Item",
                         "Cannot find Item type with id: " + itemId));
+        if (dto.getImg() != null && !dto.getImg().isEmpty()) {
+            item.setImg(dto.getImg());
+            isUpdated = true;
+        }
         if (dto.getName() != null && !dto.getName().isEmpty()) {
             item.setName(dto.getName());
             isUpdated = true;
