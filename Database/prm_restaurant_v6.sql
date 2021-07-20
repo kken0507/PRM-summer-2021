@@ -150,9 +150,9 @@ ADD CONSTRAINT UK_account_session_number UNIQUE (session_number);
 /*insert import */
 
 insert into `account` (id, email, password, role, isActive, avatar, fullname, phone, gender, dob, created_at, updated_at, created_by, updated_by) values
-(1, 'manager@test.com', '$2a$10$gUHEBxXVGR0RuJ9YkMl6xuAOmjPKFGzZVOno7gURSkIGLY4yTEakK', 'MANAGER', true, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'Nguyen Van An', '0909333555', 'M', '2000-01-01', now(), null,1, null),
-(2, 'staff@test.com', '$2a$10$gUHEBxXVGR0RuJ9YkMl6xuAOmjPKFGzZVOno7gURSkIGLY4yTEakK', 'STAFF', true, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'Nguyen Thi Be', '0909333666', 'F', '2001-01-01', now(), now(),1, 1),
-(3, 'customer@test.com', '$2a$10$gUHEBxXVGR0RuJ9YkMl6xuAOmjPKFGzZVOno7gURSkIGLY4yTEakK', 'CUSTOMER', true, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'Customer', '0000000000', 'M', '2001-01-01', now(), now(),1, 1);
+(1, 'manager@test.com', '$2a$10$oy6WYg24WHqs0JarcDDTdu7Ky1K0JQS1WrJc4BPHyVa.sAVBb4xVa', 'MANAGER', true, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'Nguyen Van An', '0909333555', 'M', '2000-01-01', now(), null,1, null),
+(2, 'staff@test.com', '$2a$10$oy6WYg24WHqs0JarcDDTdu7Ky1K0JQS1WrJc4BPHyVa.sAVBb4xVa', 'STAFF', true, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'Nguyen Thi Be', '0909333666', 'F', '2001-01-01', now(), now(),1, 1),
+(3, 'customer@test.com', '$2a$10$oy6WYg24WHqs0JarcDDTdu7Ky1K0JQS1WrJc4BPHyVa.sAVBb4xVa', 'CUSTOMER', true, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'Customer', '0000000000', 'M', '2001-01-01', now(), now(),1, 1);
 
 insert into category (id, name, created_at, updated_at, created_by, updated_by) values
 (1, 'food', now(), now(),1, 1),
